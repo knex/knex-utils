@@ -1,3 +1,1 @@
-import { dummy } from './lib/dummy'
-
-export { dummy }
+export { checkHeartbeat } from './lib/heartbeatUtils'

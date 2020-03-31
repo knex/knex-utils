@@ -1,6 +1,6 @@
 import Knex from 'knex'
 
-const HEARTBEAT_QUERIES = Object.freeze({
+export const HEARTBEAT_QUERIES = Object.freeze({
   ORACLE: 'select 1 from DUAL',
   POSTGRESQL: 'SELECT 1',
   MYSQL: 'SELECT 1',

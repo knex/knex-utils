@@ -1,0 +1,66 @@
+{
+  "name": "knex-utils",
+  "version": "1.0.0",
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "Igor Savin",
+      "email": "kibertoad@gmail.com"
+    }
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --config=jest.config.json",
+    "test:coverage": "jest --config=jest.config.json --coverage",
+    "test:ci": "npm run lint && npm run test:coverage",
+    "lint": "eslint --format codeframe \"lib/**/*.ts\" \"test/**/*.ts\"",
+    "prettier": "prettier --write \"{lib,test}/**/*.{js,ts}\" index.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "knex": "^0.20.13"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.4",
+    "@types/node": "^12.12.34",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "^25.2.4",
+    "prettier": "^2.0.2",
+    "ts-jest": "^25.3.0",
+    "typescript": "3.8.3"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "statements": 85,
+        "branches": 75,
+        "functions": 90,
+        "lines": 85
+      }
+    }
+  },
+  "homepage": "http://github.com/kibertoad/canned-enterprise-node",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kibertoad/canned-enterprise-node.git"
+  },
+  "keywords": [
+    "typescript",
+    "template"
+  ],
+  "files": [
+    "README.md",
+    "LICENSE",
+    "dist/*"
+  ]
+}

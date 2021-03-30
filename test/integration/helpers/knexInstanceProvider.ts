@@ -1,5 +1,6 @@
 import { promisify } from 'util'
 import { Knex, knex } from 'knex'
+
 const testConfig = (process.env.KNEX_TEST && require(process.env.KNEX_TEST)) || {}
 
 const Db = {

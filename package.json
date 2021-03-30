@@ -8,6 +8,7 @@
       "email": "kibertoad@gmail.com"
     }
   ],
+  "description": "Useful utilities for Knex.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -55,8 +56,10 @@
     "url": "git://github.com/kibertoad/canned-enterprise-node.git"
   },
   "keywords": [
-    "typescript",
-    "template"
+    "knex",
+    "utils",
+    "utilities",
+    "heartbeat"
   ],
   "files": [
     "README.md",

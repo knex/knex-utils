@@ -13,7 +13,7 @@ const Db = {
 
 const defaultDbs = [Db.PostgresSQL, Db.MySQL, Db.MySQL2, Db.SQLite, Db.MSSQL]
 
-export function getAllDbs() {
+export function getAllDbs(): string[] {
   return process.env.DB ? process.env.DB.split(' ') : defaultDbs
 }
 
@@ -119,7 +119,7 @@ const testConfigs: Record<string, Knex.Config> = {
   },
 }
 
-export function getKnexForDb(db: string, configOverrides = {}) {
+export function getKnexForDb(db: string, configOverrides = {}): Knex {
   const config = testConfigs[db]
   return knex({
     ...config,

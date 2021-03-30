@@ -42,3 +42,33 @@ export function checkHeartbeat(
       }
     })
 }
+
+export type returnCallback<T> = (err?: any, result?: T) => any
+
+export type CoinpaymentsRatesOpts = any
+//export type returnCallback<T> = any
+export type CoinpaymentsRatesResponse = any
+
+export type CMDS = any
+
+export class Something {
+  public mapPayload<t>(x: any, y: any): any
+
+  public rates(
+    options?: CoinpaymentsRatesOpts | returnCallback<CoinpaymentsRatesResponse>,
+    callback?: returnCallback
+  ) {
+    if (!options && !callback) {
+      options = {}
+    }
+    if (typeof options === 'function') {
+      callback = options
+      options = {}
+    }
+    const requestPayload = mapPayload<CoinpaymentsRatesOpts>(options, {
+      cmd: CMDS.RATES,
+    })
+
+    return {}
+  }
+}

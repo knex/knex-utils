@@ -1,7 +1,7 @@
-import { checkHeartbeat } from '../lib/heartbeatUtils'
+import { checkHeartbeat } from '../../lib/heartbeatUtils'
 import { ResolvingMockKnex, ThrowingMockKnex } from './helpers/knexMocks'
 
-describe('heartbeatUtils', () => {
+describe('heartbeatUtils unit', () => {
   it('Get a DB error while connecting', async () => {
     const knex = new ThrowingMockKnex()
     const checkResult = await checkHeartbeat(knex as any)

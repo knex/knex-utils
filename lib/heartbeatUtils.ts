@@ -25,7 +25,7 @@ export function checkHeartbeat(
   heartbeatQuery = HEARTBEAT_QUERIES.DEFAULT
 ): Promise<HeartbeatResult> {
   if (!knex) {
-    throw new Error('Knex is mandatory parameter')
+    throw new Error('Knex is a mandatory parameter')
   }
 
   return knex

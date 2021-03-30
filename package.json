@@ -47,21 +47,10 @@
   "engines": {
     "node": ">=10"
   },
-  "jest": {
-    "collectCoverage": true,
-    "coverageThreshold": {
-      "global": {
-        "statements": 85,
-        "branches": 75,
-        "functions": 90,
-        "lines": 85
-      }
-    }
-  },
-  "homepage": "http://github.com/kibertoad/canned-enterprise-node",
+  "homepage": "http://github.com/knex/knex-utils",
   "repository": {
     "type": "git",
-    "url": "git://github.com/kibertoad/canned-enterprise-node.git"
+    "url": "git://github.com/knex/knex-utils.git"
   },
   "keywords": [
     "knex",

@@ -1,4 +1,4 @@
-import Knex from 'knex'
+import { Knex } from 'knex'
 
 export const HEARTBEAT_QUERIES = Object.freeze({
   ORACLE: 'select 1 from DUAL',

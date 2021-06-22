@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`objectUtils copyWithoutUndefined Does nothing when there are no undefined fields 1`] = `
+Object {
+  "a": "a",
+  "b": "",
+  "c": " ",
+  "d": null,
+  "e": Object {},
+}
+`;
+
+exports[`objectUtils copyWithoutUndefined Removes undefined fields 1`] = `
+Object {
+  "b": "a",
+  "c": "",
+  "e": " ",
+  "f": null,
+  "g": Object {},
+}
+`;
+
+exports[`objectUtils pick Ignores missing fields 1`] = `
+Object {
+  "a": "a",
+}
+`;
+
+exports[`objectUtils pick Picks specified fields 1`] = `
+Object {
+  "a": "a",
+  "c": " ",
+  "e": Object {},
+}
+`;

@@ -26,3 +26,12 @@ export function pick<T, K extends string | number | symbol>(
   }
   return result
 }
+
+export function isEmptyObject(params: Record<string, any>): boolean {
+  for (const key in params) {
+    if (params.hasOwnProperty(key) && params[key] !== undefined) {
+      return false
+    }
+  }
+  return true
+}

@@ -49,11 +49,15 @@ export type JoinTableDiff<T> = {
 export function calculateJoinTableDiff<T>(
   oldList: T[],
   newList: T[],
-  id1Field: string,
-  id2Field: string
+  idFields: string[]
 ): JoinTableDiff<T> {
   const comparator = (value1: any, value2: any) => {
-    return value1[id1Field] === value2[id1Field] && value1[id2Field] === value2[id2Field]
+    for (const idField of idFields) {
+      if (value1[idField] !== value2[idField]) {
+        return false
+      }
+    }
+    return true
   }
 
   return baseDifference(oldList, newList, comparator)
@@ -64,9 +68,5 @@ export function calculateEntityDiff<T>(
   newList: T[],
   idField: string
 ): JoinTableDiff<T> {
-  const comparator = (value1: any, value2: any) => {
-    return value1[idField] === value2[idField]
-  }
-
-  return baseDifference(oldList, newList, comparator)
+  return calculateJoinTableDiff(oldList, newList, [idField])
 }

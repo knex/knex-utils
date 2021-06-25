@@ -1,4 +1,4 @@
-import { calculateEntityDiff, calculateJoinTableDiff } from '../../lib/graphUtils'
+import { calculateEntityDiff, calculateJoinTableDiff } from '../../lib/diffUtils'
 
 describe('graphUtils', () => {
   describe('calculateEntityDiff', () => {
@@ -52,7 +52,7 @@ describe('graphUtils', () => {
         { userId: 3, orgId: 2 },
       ]
 
-      const result = calculateJoinTableDiff(array1, array2, 'userId', 'orgId')
+      const result = calculateJoinTableDiff(array1, array2, ['userId', 'orgId'])
 
       expect(result).toMatchSnapshot()
     })
@@ -68,7 +68,7 @@ describe('graphUtils', () => {
         { userId: 3, orgId: 2 },
       ]
 
-      const result = calculateJoinTableDiff(array1, array2, 'userId', 'orgId')
+      const result = calculateJoinTableDiff(array1, array2, ['userId', 'orgId'])
 
       expect(result).toMatchSnapshot()
     })
@@ -84,7 +84,7 @@ describe('graphUtils', () => {
         { userId: 2, orgId: 1 },
       ]
 
-      const result = calculateJoinTableDiff(array1, array2, 'userId', 'orgId')
+      const result = calculateJoinTableDiff(array1, array2, ['userId', 'orgId'])
 
       expect(result).toMatchSnapshot()
     })
@@ -99,7 +99,7 @@ describe('graphUtils', () => {
         { userId: 3, orgId: 2 },
       ]
 
-      const result = calculateJoinTableDiff(array1, array2, 'userId', 'orgId')
+      const result = calculateJoinTableDiff(array1, array2, ['userId', 'orgId'])
 
       expect(result).toMatchSnapshot()
     })

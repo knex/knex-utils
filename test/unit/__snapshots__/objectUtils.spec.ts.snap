@@ -20,13 +20,13 @@ Object {
 }
 `;
 
-exports[`objectUtils pick Ignores missing fields 1`] = `
+exports[`pick Ignores missing fields 1`] = `
 Object {
   "a": "a",
 }
 `;
 
-exports[`objectUtils pick Picks specified fields 1`] = `
+exports[`pick Picks specified fields 1`] = `
 Object {
   "a": "a",
   "c": " ",

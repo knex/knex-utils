@@ -1,6 +1,6 @@
 import { calculateEntityDiff, calculateJoinTableDiff } from '../../lib/diffUtils'
 
-describe('graphUtils', () => {
+describe('diffUtils', () => {
   describe('calculateEntityDiff', () => {
     it('returns empty result for identical arrays', () => {
       const array1 = [{ id: 1 }, { id: 2 }]
@@ -103,5 +103,9 @@ describe('graphUtils', () => {
 
       expect(result).toMatchSnapshot()
     })
+  })
+
+  describe('updateJoinTable', () => {
+    it('correctly inserts new entries', async () => {})
   })
 })

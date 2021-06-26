@@ -1,2 +1,5 @@
 export { checkHeartbeat } from './lib/heartbeatUtils'
-export { copyWithoutUndefined, pick } from './lib/objectUtils'
+export { copyWithoutUndefined, pick, isEmptyObject } from './lib/objectUtils'
+export { chunk } from './lib/chunkUtils'
+export { updateJoinTable, calculateJoinTableDiff } from './lib/diffUtils'
+export type { UpdateJoinTableParams, JoinTableDiff } from './lib/diffUtils'

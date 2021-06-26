@@ -13,14 +13,14 @@ export function copyWithoutUndefined<T extends Record<K, V>, K extends string | 
 
 export function pick<T, K extends string | number | symbol>(
   source: T,
-  names: readonly K[]
+  propNames: readonly K[]
 ): Pick<T, Exclude<keyof T, Exclude<keyof T, K>>> {
   const result = {} as T
   let idx = 0
-  while (idx < names.length) {
-    if (names[idx] in source) {
+  while (idx < propNames.length) {
+    if (propNames[idx] in source) {
       // @ts-ignore
-      result[names[idx]] = source[names[idx]]
+      result[propNames[idx]] = source[propNames[idx]]
     }
     idx += 1
   }

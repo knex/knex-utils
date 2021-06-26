@@ -116,7 +116,7 @@ export async function updateJoinTable<T>(
         return pick(entry, params.idFields)
       })
       for (const entry of deleteCriteria) {
-        await knex(params.table).delete().where(deleteCriteria)
+        await knex(params.table).delete().where(entry)
       }
     }
 

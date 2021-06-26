@@ -104,8 +104,4 @@ describe('diffUtils', () => {
       expect(result).toMatchSnapshot()
     })
   })
-
-  describe('updateJoinTable', () => {
-    it('correctly inserts new entries', async () => {})
-  })
 })

@@ -1,7 +1,6 @@
 import { Knex } from 'knex'
 import { pick } from './objectUtils'
 import { chunk } from './chunkUtils'
-import Transaction = Knex.Transaction
 
 function arrayIncludesWith(array: any[], target: any, comparator: any) {
   if (array == null) {
@@ -77,7 +76,7 @@ export type UpdateJoinTableParams = {
   idFields: string[]
 }
 
-async function getKnexOrTrx(knex: Knex): Promise<Knex | Transaction> {
+async function getKnexOrTrx(knex: Knex): Promise<Knex | Knex.Transaction> {
   if (knex.client.driverName === 'sqlite3') {
     return knex
   }
@@ -122,12 +121,12 @@ export async function updateJoinTable<T>(
     }
 
     if (trx.isTransaction) {
-      await (trx as Transaction).commit()
+      await (trx as Knex.Transaction).commit()
     }
     return diff
   } catch (err) {
     if (trx.isTransaction) {
-      await (trx as Transaction).rollback()
+      await (trx as Knex.Transaction).rollback()
     }
     throw err
   }

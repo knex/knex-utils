@@ -57,7 +57,11 @@
     "knex",
     "utils",
     "utilities",
-    "heartbeat"
+    "heartbeat",
+    "join",
+    "batch",
+    "chunk",
+    "diff"
   ],
   "files": [
     "README.md",

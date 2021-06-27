@@ -46,7 +46,7 @@ interface HeartbeatResult {
 * `pick(source: T, propNames: K[]): Pick<T, Exclude<keyof T, Exclude<keyof T, K>>>` - returns a new object which includes all the properties, specified in the argument `propNames`. It is helpful for extracting a subset of parameters for passing across the layers, for an example, when a single service call results in two repository calls:
 
 ```ts
-  async function updateUser(
+  async function updateFullUser(
     userId: number,
     fullUserUpdate: FullUserUpdate,
   ): Promise<UserUpdateDto> {
@@ -73,10 +73,10 @@ interface HeartbeatResult {
     let updatedUser: UserRow = existingUser
     let updatedEmployee: EmployeeRow = existingEmployee
     if (!isEmptyObject(userUpdates)) {
-      updatedUser = await this.userRepository.updateUser(userId, userUpdates)
+      updatedUser = await updateUser(userId, userUpdates)
     }
     if (!isEmptyObject(employeeUpdate)) {
-      updatedEmployee = await this.employeeRepository.updateEmployee(userId, employeeUpdate)
+      updatedEmployee = await updateEmployee(userId, employeeUpdate)
     }
     return { ...updatedUser, ...updatedEmployee }
   }

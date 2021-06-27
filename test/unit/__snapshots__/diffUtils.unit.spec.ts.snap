@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`diffUtils calculateEntityDiff returns correct result for both added and removed entries 1`] = `
+exports[`diffUtils calculateEntityListDiff (single field) returns correct result for both added and removed entries 1`] = `
 Object {
   "newEntries": Array [
     Object {
@@ -21,7 +21,7 @@ Object {
 }
 `;
 
-exports[`diffUtils calculateEntityDiff returns correct result for new entries 1`] = `
+exports[`diffUtils calculateEntityListDiff (single field) returns correct result for new entries 1`] = `
 Object {
   "newEntries": Array [
     Object {
@@ -32,7 +32,7 @@ Object {
 }
 `;
 
-exports[`diffUtils calculateEntityDiff returns correct result for removed entries 1`] = `
+exports[`diffUtils calculateEntityListDiff (single field) returns correct result for removed entries 1`] = `
 Object {
   "newEntries": Array [],
   "removedEntries": Array [
@@ -43,14 +43,14 @@ Object {
 }
 `;
 
-exports[`diffUtils calculateEntityDiff returns empty result for identical arrays 1`] = `
+exports[`diffUtils calculateEntityListDiff (single field) returns empty result for identical arrays 1`] = `
 Object {
   "newEntries": Array [],
   "removedEntries": Array [],
 }
 `;
 
-exports[`diffUtils calculateJoinTableDiff returns correct result for both added and removed entries 1`] = `
+exports[`diffUtils calculateEntityListDiff returns correct result for both added and removed entries 1`] = `
 Object {
   "newEntries": Array [
     Object {
@@ -67,7 +67,7 @@ Object {
 }
 `;
 
-exports[`diffUtils calculateJoinTableDiff returns correct result for new entries 1`] = `
+exports[`diffUtils calculateEntityListDiff returns correct result for new entries 1`] = `
 Object {
   "newEntries": Array [
     Object {
@@ -79,7 +79,7 @@ Object {
 }
 `;
 
-exports[`diffUtils calculateJoinTableDiff returns correct result for removed entries 1`] = `
+exports[`diffUtils calculateEntityListDiff returns correct result for removed entries 1`] = `
 Object {
   "newEntries": Array [],
   "removedEntries": Array [
@@ -91,7 +91,7 @@ Object {
 }
 `;
 
-exports[`diffUtils calculateJoinTableDiff returns empty result for identical arrays 1`] = `
+exports[`diffUtils calculateEntityListDiff returns empty result for identical arrays 1`] = `
 Object {
   "newEntries": Array [],
   "removedEntries": Array [],

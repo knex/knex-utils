@@ -1,6 +1,7 @@
 # knex-utils
 
 [![npm version](http://img.shields.io/npm/v/knex-utils.svg)](https://npmjs.org/package/knex-utils)
+[![NPM Downloads](https://img.shields.io/npm/dm/knex-utils.svg)](https://npmjs.org/package/knex-utils)
 ![](https://github.com/knex/knex-utils/workflows/CI/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/knex/knex-utils/badge.svg?branch=master)](https://coveralls.io/r/knex/knex-utils?branch=master)
 
@@ -45,10 +46,18 @@ interface HeartbeatResult {
 * `pick(source: T, propNames: K[]): Pick<T, Exclude<keyof T, Exclude<keyof T, K>>>` - returns a new object which includes all the properties, specified in the argument `propNames`. It is helpful for extracting a subset of parameters for passing across the layers, for an example, when a single service call results in two repository calls:
 
 ```ts
-  async function updateUser(
+  async function updateFullUser(
     userId: number,
     fullUserUpdate: FullUserUpdate,
   ): Promise<UserUpdateDto> {
+    const existingUser = await getUser(userId)
+    const existingEmployee = await getEmployeeByUserId(userId)
+    if (!existingUser) {
+        throw new Error('User does not exist')
+    }
+    if (!existingEmployee) {
+        throw new Error('Employee does not exist')
+    }
     const userUpdates = pick(fullUserUpdate, [
       'userId',
       'name',
@@ -64,11 +73,48 @@ interface HeartbeatResult {
     let updatedUser: UserRow = existingUser
     let updatedEmployee: EmployeeRow = existingEmployee
     if (!isEmptyObject(userUpdates)) {
-      updatedUser = await this.userRepository.updateUser(userId, userUpdates)
+      updatedUser = await updateUser(userId, userUpdates)
     }
     if (!isEmptyObject(employeeUpdate)) {
-      updatedEmployee = await this.employeeRepository.updateEmployee(userId, employeeUpdate)
+      updatedEmployee = await updateEmployee(userId, employeeUpdate)
     }
     return { ...updatedUser, ...updatedEmployee }
   }
+```
+
+### DB relation difference operations
+
+* `calculateEntityListDiff(oldList: T[], newList: T[], idFields: string[]): EntityListDiff<T>` - given the two lists of entities, identity of said entities defined by a given set of properties, calculates two lists of entities: the ones that were removed, and the ones that were added in the new list, as compared to the old list.
+
+* `updateJoinTable(knex: Knex, newList: T[], params: UpdateJoinTableParams): EntityListDiff<T>` - compares a new list of entities to a current state of database, deletes all entries that are no longer in the list.
+
+```ts
+interface UpdateJoinTableParams {
+    filterCriteria: Record<string, any> // Parameters that will be used for retrieving the old list. Typically you would be using all or some fields from `idFields` param for the filter query, to ensure you are only updating relationships of a specific parent, although it is not impossible to imagine a scenario when you would like to potentially repopulate the whole table, which would require empty filter criteria.
+    table: string // DB table that will be used for retrieving existing data, and deleting removed / inserting added data.
+    idFields: string[] // Combination of fields that allows to uniquely identify each entity. For a join table that typically would be a combination of all the foreign key columns, but sometimes it may include additional columns as well (e. g. a columnm, specifying relation type between the linked entities). Note that it probably shouldn't be a synthetic, DB sequence-based primary key, because for new entries that were not yet inserted, you are unlikely to have them.    
+    primaryKeyField?: string // If table has single primary key that uniquely identifies each row (typically a synthetic, DB sequence-based one), it can be used for batch deletion of removed entries, dramatically improving performance.
+    chunkSize?: number // How many rows per statement should be used for batch insert/delete operations. Default is 100
+}
+```
+
+Note that this is not an upsert operation and should not be used as one. If there is a match based on `idFields` property combination, even if other fields are different, this method will leave the row as-is. As the name of the function suggests, this is primarily useful for the join table situation, when you might want to perform multiple deletion and insertion operations to reach the desired state.
+
+Example:
+```ts
+  const oldList = generateAssets(0, { orgId: 'kiberion', linkType: 'primaryAsset' }, 10)
+  await knex('joinTable').insert(oldList)
+  const newList = generateAssets(10000, { orgId: 'kiberion', linkType: 'primaryAsset' }, 4)
+  const mixedList = [oldList[0], ...newList]
+
+  // this will result in all the elements from the old list, other than the first one, to be deleted, and all the elements in the new list to be inserted
+  await updateJoinTable(knex, mixedList, {
+    primaryKeyField: 'id',
+    idFields: ['userId', 'orgId', 'linkType'],
+    table: 'joinTable',
+    filterCriteria: {
+      orgId: 'kiberion',
+      linkType: 'primaryAsset',
+    },
+  })
 ```

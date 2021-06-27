@@ -15,7 +15,7 @@ function arrayIncludesWith(array: any[], target: any, comparator: any) {
   return false
 }
 
-function baseDifference<T>(initialArray: T[], newArray: T[], comparator: any): JoinTableDiff<T> {
+function baseDifference<T>(initialArray: T[], newArray: T[], comparator: any): EntityListDiff<T> {
   const includes = arrayIncludesWith
   const newEntries: T[] = []
   const removedEntries: T[] = []
@@ -38,16 +38,16 @@ function baseDifference<T>(initialArray: T[], newArray: T[], comparator: any): J
   }
 }
 
-export type JoinTableDiff<T> = {
+export type EntityListDiff<T> = {
   newEntries: T[]
   removedEntries: T[]
 }
 
-export function calculateJoinTableDiff<T>(
+export function calculateEntityListDiff<T>(
   oldList: T[],
   newList: T[],
   idFields: string[]
-): JoinTableDiff<T> {
+): EntityListDiff<T> {
   const comparator = (value1: any, value2: any) => {
     for (const idField of idFields) {
       if (value1[idField] !== value2[idField]) {
@@ -58,14 +58,6 @@ export function calculateJoinTableDiff<T>(
   }
 
   return baseDifference(oldList, newList, comparator)
-}
-
-export function calculateEntityDiff<T>(
-  oldList: T[],
-  newList: T[],
-  idField: string
-): JoinTableDiff<T> {
-  return calculateJoinTableDiff(oldList, newList, [idField])
 }
 
 export type UpdateJoinTableParams = {
@@ -88,12 +80,12 @@ export async function updateJoinTable<T>(
   knex: Knex,
   newList: T[],
   params: UpdateJoinTableParams
-): Promise<JoinTableDiff<T>> {
+): Promise<EntityListDiff<T>> {
   const chunkSize = params.chunkSize || 100
   const trx = await getKnexOrTrx(knex)
   try {
     const oldList = await knex(params.table).select('*').where(params.filterCriteria)
-    const diff = calculateJoinTableDiff(oldList, newList, params.idFields)
+    const diff = calculateEntityListDiff(oldList, newList, params.idFields)
 
     const insertChunks = chunk(diff.newEntries, chunkSize)
     for (const insertChunk of insertChunks) {

@@ -49,6 +49,14 @@ interface HeartbeatResult {
     userId: number,
     fullUserUpdate: FullUserUpdate,
   ): Promise<UserUpdateDto> {
+    const existingUser = await getUser(userId)
+    const existingEmployee = await getEmployeeByUserId(userId)
+    if (!existingUser) {
+        throw new Error('User does not exist')
+    }
+    if (!existingEmployee) {
+        throw new Error('Employee does not exist')
+    }
     const userUpdates = pick(fullUserUpdate, [
       'userId',
       'name',
@@ -71,4 +79,41 @@ interface HeartbeatResult {
     }
     return { ...updatedUser, ...updatedEmployee }
   }
+```
+
+### DB relation difference operations
+
+* `calculateEntityListDiff(oldList: T[], newList: T[], idFields: string[]): : JoinTableDiff<T>` - given two lists of entities, identity of which is defined by a given set of properties, calculates a list of entities that were removed and added in the new list, as compared to the old list.
+
+* `updateJoinTable(knex: Knex, newList: T[], params: UpdateJoinTableParams)` - compares a new list of entities to a current state of database, deletes all entries that are no longer in the list.
+
+```ts
+interface UpdateJoinTableParams {
+    filterCriteria: Record<string, any> // Parameters that will be used for retrieving the old list. Typically you would be using all or some fields from `idFields` param for the filter query, to ensure you are only updating relationships of a specific parent, although it is not impossible to imagine a scenario when you would like to potentially repopulate the whole table, which would require empty filter criteria.
+    table: string // DB table to retrieve from/update
+    idFields: string[] // Which combination of fields allows to uniquely identify each row. For a join table that typically would be a combination of all the foreign key columns. Note that it probably shouldn't be a synthetic, DB sequence-based primary key, because for new entries that were not yet inserted, you are unlikely to have them.    
+    primaryKeyField?: string // If table has single primary key that uniquely identifies each row (typically a synthetic, DB sequence-based one), it can be used for batch deletion of removed entries, dramatically improving performance
+    chunkSize?: number // How many rows per statement should be used for batch insert/delete operations. Default is 100
+}
+```
+
+Note that this is not an upsert operation and should not be used as one. If there is a match based on `idFields` property combination, even if other fields are different, this method will leave the row as-is. As the name of the function suggests, this is primarily useful for the join table situation, when you might want to perform multiple deletion and insertion operations to reach the desired state.
+
+Example:
+```ts
+  const oldList = generateAssets(0, { orgId: 'kiberion', linkType: 'primaryAsset' }, 10)
+  await knex('joinTable').insert(oldList)
+  const newList = generateAssets(10000, { orgId: 'kiberion', linkType: 'primaryAsset' }, 4)
+  const mixedList = [oldList[0], ...newList]
+
+  // this will result in all the elements from the old list, other than the first one, to be deleted, and all the elements in the new list to be inserted
+  await updateJoinTable(knex, mixedList, {
+    primaryKeyField: 'id',
+    idFields: ['userId', 'orgId', 'linkType'],
+    table: 'joinTable',
+    filterCriteria: {
+      orgId: 'kiberion',
+      linkType: 'primaryAsset',
+    },
+  })
 ```

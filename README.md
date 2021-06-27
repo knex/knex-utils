@@ -90,9 +90,9 @@ interface HeartbeatResult {
 ```ts
 interface UpdateJoinTableParams {
     filterCriteria: Record<string, any> // Parameters that will be used for retrieving the old list. Typically you would be using all or some fields from `idFields` param for the filter query, to ensure you are only updating relationships of a specific parent, although it is not impossible to imagine a scenario when you would like to potentially repopulate the whole table, which would require empty filter criteria.
-    table: string // DB table to retrieve from/update
-    idFields: string[] // Which combination of fields allows to uniquely identify each row. For a join table that typically would be a combination of all the foreign key columns. Note that it probably shouldn't be a synthetic, DB sequence-based primary key, because for new entries that were not yet inserted, you are unlikely to have them.    
-    primaryKeyField?: string // If table has single primary key that uniquely identifies each row (typically a synthetic, DB sequence-based one), it can be used for batch deletion of removed entries, dramatically improving performance
+    table: string // DB table that will be used for retrieving existing data, and deleting removed / inserting added data.
+    idFields: string[] // Combination of fields that allows to uniquely identify each entity. For a join table that typically would be a combination of all the foreign key columns, but sometimes it may include additional columns as well (e. g. a columnm, specifying relation type between the linked entities). Note that it probably shouldn't be a synthetic, DB sequence-based primary key, because for new entries that were not yet inserted, you are unlikely to have them.    
+    primaryKeyField?: string // If table has single primary key that uniquely identifies each row (typically a synthetic, DB sequence-based one), it can be used for batch deletion of removed entries, dramatically improving performance.
     chunkSize?: number // How many rows per statement should be used for batch insert/delete operations. Default is 100
 }
 ```

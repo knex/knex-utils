@@ -1,4 +1,4 @@
-import {copyWithoutUndefined, groupBy, isEmptyObject, pick} from '../../lib/objectUtils'
+import { copyWithoutUndefined, groupBy, isEmptyObject, pick } from '../../lib/objectUtils'
 
 describe('objectUtils', () => {
   describe('copyWithoutUndefined', () => {

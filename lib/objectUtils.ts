@@ -35,3 +35,20 @@ export function isEmptyObject(params: Record<string, any>): boolean {
   }
   return true
 }
+
+export function groupBy<T>(inputArray: T[], propName: string): Record<string, T> {
+  return inputArray.reduce((result, entry) => {
+    // @ts-ignore
+    const key = entry[propName]
+
+    // @ts-ignore
+    if (Object.hasOwnProperty.call(result, key)) {
+      // @ts-ignore
+      result[key].push(entry)
+    } else {
+      // @ts-ignore
+      result[key] = [entry]
+    }
+    return result
+  }, {})
+}

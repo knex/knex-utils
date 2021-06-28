@@ -41,6 +41,8 @@ interface HeartbeatResult {
   }
 ```
 
+* `groupBy(inputArray: T[], propName: string): Record<string, T>` - Creates an object composed of keys that are equal to the values of properties specified by `propName` in the original data. Values of that object's fields are arrays, filled with original objects from `inputArray`.
+
 * `isEmptyObject(params: Record<string, any>): boolean` - returns true, if object has only undefined properties. This is useful e. g. for optional update params, to determine whether whole operation can be skipped. For a full example see `pick` method.
 
 * `pick(source: T, propNames: K[]): Pick<T, Exclude<keyof T, Exclude<keyof T, K>>>` - returns a new object which includes all the properties, specified in the argument `propNames`. It is helpful for extracting a subset of parameters for passing across the layers, for an example, when a single service call results in two repository calls:

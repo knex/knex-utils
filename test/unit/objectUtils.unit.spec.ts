@@ -1,4 +1,4 @@
-import { copyWithoutUndefined, isEmptyObject, pick } from '../../lib/objectUtils'
+import {copyWithoutUndefined, groupBy, isEmptyObject, pick} from '../../lib/objectUtils'
 
 describe('objectUtils', () => {
   describe('copyWithoutUndefined', () => {
@@ -85,6 +85,56 @@ describe('pick', () => {
       const params = { a: '' }
       const result = isEmptyObject(params)
       expect(result).toBe(false)
+    })
+  })
+
+  describe('groupBy', () => {
+    it('Correctly groups by values', () => {
+      const input = [
+        {
+          id: 1,
+          name: 'a',
+        },
+        {
+          id: 2,
+          name: 'c',
+        },
+        {
+          id: 3,
+          name: 'b',
+        },
+        {
+          id: 4,
+          name: 'a',
+        },
+      ]
+
+      const result = groupBy(input, 'name')
+
+      expect(result).toMatchSnapshot()
+    })
+
+    it('Correctly handles undefined', () => {
+      const input = [
+        {
+          id: 1,
+          name: '45',
+        },
+        {
+          id: 2,
+        },
+        {
+          id: 3,
+        },
+        {
+          id: 4,
+          name: '45',
+        },
+      ]
+
+      const result = groupBy(input, 'name')
+
+      expect(result).toMatchSnapshot()
     })
   })
 })

@@ -125,7 +125,7 @@ export async function updateJoinTable<T>(
       }
     }
 
-    if (trx.isTransaction) {
+    if (trx.isTransaction && !params.transaction && !params.transactionProvider) {
       await (trx as Knex.Transaction).commit()
     }
     return diff

@@ -66,11 +66,24 @@ export type UpdateJoinTableParams = {
   primaryKeyField?: string
   chunkSize?: number
   idFields: string[]
+  transactionProvider?: Knex.TransactionProvider
+  transaction?: Knex.Transaction
 }
 
-async function getKnexOrTrx(knex: Knex): Promise<Knex | Knex.Transaction> {
+async function getKnexOrTrx(
+  knex: Knex,
+  params: UpdateJoinTableParams
+): Promise<Knex | Knex.Transaction> {
   if (knex.client.driverName === 'sqlite3') {
     return knex
+  }
+
+  if (params.transaction) {
+    return params.transaction
+  }
+
+  if (params.transactionProvider) {
+    return params.transactionProvider()
   }
 
   return knex.transaction()
@@ -82,7 +95,7 @@ export async function updateJoinTable<T>(
   params: UpdateJoinTableParams
 ): Promise<EntityListDiff<T>> {
   const chunkSize = params.chunkSize || 100
-  const trx = await getKnexOrTrx(knex)
+  const trx = await getKnexOrTrx(knex, params)
   try {
     const oldList = await knex(params.table).select('*').where(params.filterCriteria)
     const diff = calculateEntityListDiff(oldList, newList, params.idFields)

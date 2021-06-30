@@ -97,12 +97,12 @@ export async function updateJoinTable<T>(
   const chunkSize = params.chunkSize || 100
   const trx = await getKnexOrTrx(knex, params)
   try {
-    const oldList = await knex(params.table).select('*').where(params.filterCriteria)
+    const oldList = await trx(params.table).select('*').where(params.filterCriteria)
     const diff = calculateEntityListDiff(oldList, newList, params.idFields)
 
     const insertChunks = chunk(diff.newEntries, chunkSize)
     for (const insertChunk of insertChunks) {
-      await knex(params.table).insert(insertChunk)
+      await trx(params.table).insert(insertChunk)
     }
 
     // If we have a primary key, then we can delete in batch
@@ -112,7 +112,7 @@ export async function updateJoinTable<T>(
       })
       const deleteChunks = chunk(deleteIds, chunkSize)
       for (const deleteChunk of deleteChunks) {
-        await knex(params.table).delete().whereIn(params.primaryKeyField, deleteChunk)
+        await trx(params.table).delete().whereIn(params.primaryKeyField, deleteChunk)
       }
     }
     // Otherwise we have to delete one-by-one
@@ -121,7 +121,7 @@ export async function updateJoinTable<T>(
         return pick(entry, params.idFields)
       })
       for (const entry of deleteCriteria) {
-        await knex(params.table).delete().where(entry)
+        await trx(params.table).delete().where(entry)
       }
     }
 

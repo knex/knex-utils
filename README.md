@@ -97,6 +97,8 @@ interface UpdateJoinTableParams {
     idFields: string[] // Combination of fields that allows to uniquely identify each entity. For a join table that typically would be a combination of all the foreign key columns, but sometimes it may include additional columns as well (e. g. a columnm, specifying relation type between the linked entities). Note that it probably shouldn't be a synthetic, DB sequence-based primary key, because for new entries that were not yet inserted, you are unlikely to have them.    
     primaryKeyField?: string // If table has single primary key that uniquely identifies each row (typically a synthetic, DB sequence-based one), it can be used for batch deletion of removed entries, dramatically improving performance.
     chunkSize?: number // How many rows per statement should be used for batch insert/delete operations. Default is 100
+    transaction?: Knex.Transaction // If set, whole operation will be executed in provided transaction
+    transactionProvider?: Knex.TransactionProvider // If set, whole operation will be executed using transaction resolved from provided transactionProvider
 }
 ```
 

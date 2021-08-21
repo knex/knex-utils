@@ -1,4 +1,10 @@
-import { copyWithoutUndefined, groupBy, isEmptyObject, pick } from '../../lib/objectUtils'
+import {
+  copyWithoutUndefined,
+  groupBy,
+  isEmptyObject,
+  pick,
+  pickWithoutUndefined,
+} from '../../lib/objectUtils'
 
 describe('objectUtils', () => {
   describe('copyWithoutUndefined', () => {
@@ -62,79 +68,137 @@ describe('pick', () => {
     expect(result).toMatchSnapshot()
   })
 
-  describe('isEmptyObject', () => {
-    it('Returns true for completely empty object', () => {
-      const params = {}
-      const result = isEmptyObject(params)
-      expect(result).toBe(true)
-    })
+  it('Includes undefined fields', () => {
+    const result = pick(
+      {
+        a: 'a',
+        b: undefined,
+        c: {},
+      },
+      ['a', 'b']
+    )
 
-    it('Returns true for object with only undefined fields', () => {
-      const params = { a: undefined }
-      const result = isEmptyObject(params)
-      expect(result).toBe(true)
-    })
+    expect(result).toMatchSnapshot()
+  })
+})
 
-    it('Returns false for object with null', () => {
-      const params = { a: null }
-      const result = isEmptyObject(params)
-      expect(result).toBe(false)
-    })
+describe('pickWithoutUndefined', () => {
+  it('Picks specified fields', () => {
+    const result = pickWithoutUndefined(
+      {
+        a: 'a',
+        b: '',
+        c: ' ',
+        d: null,
+        e: {},
+      },
+      ['a', 'c', 'e']
+    )
 
-    it('Returns false for non-empty object', () => {
-      const params = { a: '' }
-      const result = isEmptyObject(params)
-      expect(result).toBe(false)
-    })
+    expect(result).toMatchSnapshot()
   })
 
-  describe('groupBy', () => {
-    it('Correctly groups by values', () => {
-      const input = [
-        {
-          id: 1,
-          name: 'a',
-        },
-        {
-          id: 2,
-          name: 'c',
-        },
-        {
-          id: 3,
-          name: 'b',
-        },
-        {
-          id: 4,
-          name: 'a',
-        },
-      ]
+  it('Ignores missing fields', () => {
+    const result = pickWithoutUndefined(
+      {
+        a: 'a',
+        b: '',
+        c: ' ',
+        d: null,
+        e: {},
+      },
+      ['a', 'f', 'g']
+    )
 
-      const result = groupBy(input, 'name')
+    expect(result).toMatchSnapshot()
+  })
 
-      expect(result).toMatchSnapshot()
-    })
+  it('Skips undefined fields', () => {
+    const result = pickWithoutUndefined(
+      {
+        a: 'a',
+        b: undefined,
+        c: {},
+      },
+      ['a', 'b']
+    )
 
-    it('Correctly handles undefined', () => {
-      const input = [
-        {
-          id: 1,
-          name: '45',
-        },
-        {
-          id: 2,
-        },
-        {
-          id: 3,
-        },
-        {
-          id: 4,
-          name: '45',
-        },
-      ]
+    expect(result).toMatchSnapshot()
+  })
+})
 
-      const result = groupBy(input, 'name')
+describe('isEmptyObject', () => {
+  it('Returns true for completely empty object', () => {
+    const params = {}
+    const result = isEmptyObject(params)
+    expect(result).toBe(true)
+  })
 
-      expect(result).toMatchSnapshot()
-    })
+  it('Returns true for object with only undefined fields', () => {
+    const params = { a: undefined }
+    const result = isEmptyObject(params)
+    expect(result).toBe(true)
+  })
+
+  it('Returns false for object with null', () => {
+    const params = { a: null }
+    const result = isEmptyObject(params)
+    expect(result).toBe(false)
+  })
+
+  it('Returns false for non-empty object', () => {
+    const params = { a: '' }
+    const result = isEmptyObject(params)
+    expect(result).toBe(false)
+  })
+})
+
+describe('groupBy', () => {
+  it('Correctly groups by values', () => {
+    const input = [
+      {
+        id: 1,
+        name: 'a',
+      },
+      {
+        id: 2,
+        name: 'c',
+      },
+      {
+        id: 3,
+        name: 'b',
+      },
+      {
+        id: 4,
+        name: 'a',
+      },
+    ]
+
+    const result = groupBy(input, 'name')
+
+    expect(result).toMatchSnapshot()
+  })
+
+  it('Correctly handles undefined', () => {
+    const input = [
+      {
+        id: 1,
+        name: '45',
+      },
+      {
+        id: 2,
+      },
+      {
+        id: 3,
+      },
+      {
+        id: 4,
+        name: '45',
+      },
+    ]
+
+    const result = groupBy(input, 'name')
+
+    expect(result).toMatchSnapshot()
   })
 })

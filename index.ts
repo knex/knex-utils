@@ -1,6 +1,12 @@
 export { checkHeartbeat, HEARTBEAT_QUERIES } from './lib/heartbeatUtils'
 
-export { copyWithoutUndefined, pick, isEmptyObject, groupBy } from './lib/objectUtils'
+export {
+  copyWithoutUndefined,
+  pick,
+  pickWithoutUndefined,
+  isEmptyObject,
+  groupBy,
+} from './lib/objectUtils'
 
 export { chunk } from './lib/chunkUtils'
 

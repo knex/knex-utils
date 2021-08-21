@@ -84,6 +84,8 @@ interface HeartbeatResult {
   }
 ```
 
+* `pickWithoutUndefined(source: T, propNames: K[]): Pick<T, Exclude<keyof T, Exclude<keyof T, K>>>` - same as `pick`, but skips properties with value `undefined`.
+
 ### DB relation difference operations
 
 * `calculateEntityListDiff(oldList: T[], newList: T[], idFields: string[]): EntityListDiff<T>` - given the two lists of entities, identity of said entities defined by a given set of properties, calculates two lists of entities: the ones that were removed, and the ones that were added in the new list, as compared to the old list.

@@ -1,5 +1,55 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`groupBy Correctly groups by values 1`] = `
+Object {
+  "a": Array [
+    Object {
+      "id": 1,
+      "name": "a",
+    },
+    Object {
+      "id": 4,
+      "name": "a",
+    },
+  ],
+  "b": Array [
+    Object {
+      "id": 3,
+      "name": "b",
+    },
+  ],
+  "c": Array [
+    Object {
+      "id": 2,
+      "name": "c",
+    },
+  ],
+}
+`;
+
+exports[`groupBy Correctly handles undefined 1`] = `
+Object {
+  "45": Array [
+    Object {
+      "id": 1,
+      "name": "45",
+    },
+    Object {
+      "id": 4,
+      "name": "45",
+    },
+  ],
+  "undefined": Array [
+    Object {
+      "id": 2,
+    },
+    Object {
+      "id": 3,
+    },
+  ],
+}
+`;
+
 exports[`objectUtils copyWithoutUndefined Does nothing when there are no undefined fields 1`] = `
 Object {
   "a": "a",
@@ -38,56 +88,6 @@ Object {
   "a": "a",
   "c": " ",
   "e": Object {},
-}
-`;
-
-exports[`pick groupBy Correctly groups by values 1`] = `
-Object {
-  "a": Array [
-    Object {
-      "id": 1,
-      "name": "a",
-    },
-    Object {
-      "id": 4,
-      "name": "a",
-    },
-  ],
-  "b": Array [
-    Object {
-      "id": 3,
-      "name": "b",
-    },
-  ],
-  "c": Array [
-    Object {
-      "id": 2,
-      "name": "c",
-    },
-  ],
-}
-`;
-
-exports[`pick groupBy Correctly handles undefined 1`] = `
-Object {
-  "45": Array [
-    Object {
-      "id": 1,
-      "name": "45",
-    },
-    Object {
-      "id": 4,
-      "name": "45",
-    },
-  ],
-  "undefined": Array [
-    Object {
-      "id": 2,
-    },
-    Object {
-      "id": 3,
-    },
-  ],
 }
 `;
 

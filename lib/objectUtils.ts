@@ -44,10 +44,7 @@ export function pickWithoutUndefined<T, K extends string | number | symbol>(
   return result
 }
 
-export function validateOnlyWhitelistedFields<T, K extends string | number | symbol>(
-  source: T,
-  propNames: readonly string[]
-) {
+export function validateOnlyWhitelistedFields<T>(source: T, propNames: readonly string[]) {
   const keys = Object.keys(source)
   for (var x = 0; x < keys.length; x++) {
     if (propNames.indexOf(keys[x]) === -1) {

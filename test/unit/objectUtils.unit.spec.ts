@@ -4,6 +4,8 @@ import {
   isEmptyObject,
   pick,
   pickWithoutUndefined,
+  strictPickWithoutUndefined,
+  validateOnlyWhitelistedFieldsSet,
 } from '../../lib/objectUtils'
 
 describe('objectUtils', () => {
@@ -124,6 +126,96 @@ describe('pickWithoutUndefined', () => {
     )
 
     expect(result).toMatchSnapshot()
+  })
+})
+
+describe('strictPickWithoutUndefined', () => {
+  it('Throws an error on excessive properties', () => {
+    expect(() => {
+      strictPickWithoutUndefined(
+        {
+          a: 'a',
+          b: '',
+          c: ' ',
+          d: null,
+          e: {},
+        },
+        ['a', 'c', 'e']
+      )
+    }).toThrowError(/Unsupported field: b/)
+  })
+
+  it('Picks exact set of properties', () => {
+    const result = strictPickWithoutUndefined(
+      {
+        a: 'a',
+        c: ' ',
+        e: {},
+      },
+      ['a', 'c', 'e']
+    )
+
+    expect(result).toMatchSnapshot()
+  })
+
+  it('Ignores missing fields', () => {
+    const result = strictPickWithoutUndefined(
+      {
+        a: 'a',
+      },
+      ['a', 'f', 'g']
+    )
+
+    expect(result).toMatchSnapshot()
+  })
+
+  it('Skips undefined fields', () => {
+    const result = strictPickWithoutUndefined(
+      {
+        a: 'a',
+        b: undefined,
+      },
+      ['a', 'b']
+    )
+
+    expect(result).toMatchSnapshot()
+  })
+})
+
+describe('validateOnlyWhitelistedFieldsSet', () => {
+  it('throws an error on excessive properties', () => {
+    expect(() => {
+      validateOnlyWhitelistedFieldsSet(
+        {
+          a: 'a',
+          b: '',
+          c: ' ',
+          d: null,
+          e: {},
+        },
+        new Set(['a', 'c', 'e'])
+      )
+    }).toThrowError(/Unsupported field: b/)
+  })
+
+  it('passes if there is exact match', () => {
+    validateOnlyWhitelistedFieldsSet(
+      {
+        a: 'a',
+        c: ' ',
+        e: {},
+      },
+      new Set(['a', 'c', 'e'])
+    )
+  })
+
+  it('passes if some fields are missing', () => {
+    validateOnlyWhitelistedFieldsSet(
+      {
+        a: 'a',
+      },
+      new Set(['a', 'c', 'e'])
+    )
   })
 })
 

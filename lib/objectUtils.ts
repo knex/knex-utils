@@ -44,6 +44,35 @@ export function pickWithoutUndefined<T, K extends string | number | symbol>(
   return result
 }
 
+export function validateOnlyWhitelistedFields<T>(source: T, propNames: readonly string[]) {
+  const keys = Object.keys(source)
+  for (var x = 0; x < keys.length; x++) {
+    if (propNames.indexOf(keys[x]) === -1) {
+      throw new Error(`Unsupported field: ${keys[x]}`)
+    }
+  }
+}
+
+export function validateOnlyWhitelistedFieldsSet(
+  source: Record<string, any>,
+  propNames: Set<string>
+) {
+  const keys = Object.keys(source)
+  for (var x = 0; x < keys.length; x++) {
+    if (!propNames.has(keys[x])) {
+      throw new Error(`Unsupported field: ${keys[x]}`)
+    }
+  }
+}
+
+export function strictPickWithoutUndefined<T>(
+  source: T,
+  propNames: readonly string[]
+): Pick<T, Exclude<keyof T, Exclude<keyof T, string>>> {
+  validateOnlyWhitelistedFields(source, propNames)
+  return pickWithoutUndefined(source, propNames)
+}
+
 export function isEmptyObject(params: Record<string, any>): boolean {
   for (const key in params) {
     if (params.hasOwnProperty(key) && params[key] !== undefined) {

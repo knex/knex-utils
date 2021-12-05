@@ -110,3 +110,23 @@ Object {
   "a": "a",
 }
 `;
+
+exports[`strictPickWithoutUndefined Ignores missing fields 1`] = `
+Object {
+  "a": "a",
+}
+`;
+
+exports[`strictPickWithoutUndefined Picks exact set of properties 1`] = `
+Object {
+  "a": "a",
+  "c": " ",
+  "e": Object {},
+}
+`;
+
+exports[`strictPickWithoutUndefined Skips undefined fields 1`] = `
+Object {
+  "a": "a",
+}
+`;

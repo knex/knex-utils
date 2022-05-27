@@ -24,7 +24,7 @@
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
-    "knex": "^0.95.4"
+    "knex": ">=0.95.4"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",

@@ -11,7 +11,7 @@ export function copyWithoutUndefined<T extends Record<K, V>, K extends string | 
   }, {} as Record<string, any>) as T
 }
 
-export function pick<T, K extends string | number | symbol>(
+export function pick<T extends object, K extends string | number | symbol>(
   source: T,
   propNames: readonly K[]
 ): Pick<T, Exclude<keyof T, Exclude<keyof T, K>>> {
@@ -44,7 +44,10 @@ export function pickWithoutUndefined<T, K extends string | number | symbol>(
   return result
 }
 
-export function validateOnlyWhitelistedFields<T>(source: T, propNames: readonly string[]) {
+export function validateOnlyWhitelistedFields<T extends object>(
+  source: T,
+  propNames: readonly string[]
+) {
   const keys = Object.keys(source)
   for (var x = 0; x < keys.length; x++) {
     if (propNames.indexOf(keys[x]) === -1) {
@@ -65,7 +68,7 @@ export function validateOnlyWhitelistedFieldsSet(
   }
 }
 
-export function strictPickWithoutUndefined<T>(
+export function strictPickWithoutUndefined<T extends object>(
   source: T,
   propNames: readonly string[]
 ): Pick<T, Exclude<keyof T, Exclude<keyof T, string>>> {
